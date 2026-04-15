@@ -7,7 +7,15 @@ export interface Note {
   updatedAt: string;
 }
 
-export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+export const NOTE_TAGS = [
+  "Todo",
+  "Work",
+  "Personal",
+  "Meeting",
+  "Shopping",
+] as const;
+
+export type NoteTag = (typeof NOTE_TAGS)[number];
 
 export interface CreateNoteRequest {
   title: string;
