@@ -8,7 +8,7 @@ import {
   deleteNote as apiDeleteNote,
   type FetchNotesResponse,
   type DeleteNoteResponse,
-} from "./api/notes";
+} from "./api";
 
 export async function fetchNotes(
   page: number = 1,
