@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default async function NotesPage() {
+export default function NotesFilterPage() {
   redirect("/notes/filter/all");
 }

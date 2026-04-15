@@ -1,6 +1,6 @@
-'use server';
+"use server";
 
-import type { Note, CreateNoteRequest } from '../types/note';
+import type { Note, CreateNoteRequest } from "../types/note";
 import {
   fetchNotes as apiGetNotes,
   fetchNoteById as apiGetNoteById,
@@ -8,14 +8,15 @@ import {
   deleteNote as apiDeleteNote,
   type FetchNotesResponse,
   type DeleteNoteResponse,
-} from './api';
+} from "./api/notes";
 
 export async function fetchNotes(
   page: number = 1,
   perPage: number = 12,
-  search: string = ''
+  search: string = "",
+  tag?: string,
 ): Promise<FetchNotesResponse> {
-  return apiGetNotes(page, perPage, search);
+  return apiGetNotes(page, perPage, search, tag);
 }
 
 export async function fetchNoteById(id: string): Promise<Note> {
