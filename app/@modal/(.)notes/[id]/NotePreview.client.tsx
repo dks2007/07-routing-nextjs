@@ -1,8 +1,10 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { fetchNoteById } from "../../../../lib/server-actions";
 import Modal from "../../../../components/Modal/Modal";
-import NotePreview from "../../../../components/NotePreview/NotePreview";
+import css from "../../../../components/NotePreview/NotePreview.module.css";
 
 interface NotePreviewClientProps {
   id: string;
@@ -11,9 +13,15 @@ interface NotePreviewClientProps {
 export default function NotePreviewClient({ id }: NotePreviewClientProps) {
   const router = useRouter();
 
-  if (!id) {
-    return null;
-  }
+  const {
+    data: note,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+  });
 
   const handleClose = () => {
     router.back();
@@ -21,7 +29,25 @@ export default function NotePreviewClient({ id }: NotePreviewClientProps) {
 
   return (
     <Modal isOpen onClose={handleClose}>
-      <NotePreview id={id} onClose={handleClose} />
+      {isLoading && <p>Loading, please wait...</p>}
+      {isError && <p>Something went wrong.</p>}
+      {note && (
+        <div className={css.container}>
+          <button className={css.backBtn} type="button" onClick={handleClose}>
+            Back
+          </button>
+          <div className={css.item}>
+            <div className={css.header}>
+              <h2>{note.title}</h2>
+            </div>
+            <p className={css.tag}>{note.tag}</p>
+            <p className={css.content}>{note.content}</p>
+            <p className={css.date}>
+              Created {new Date(note.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      )}
     </Modal>
   );
 }
